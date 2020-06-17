@@ -1,0 +1,5 @@
+Wipay for Commerce 1.0.0-pl
+---------------------------------
+Released on
+
+- Initial release

@@ -1,0 +1,11 @@
+<!-- todo: pull in gateway URL from gateway class and actual order info -->
+<form action="https://sandbox.wipayfinancial.com/v1/gateway" method="POST">
+    <input name="total" type="hidden" value="10">
+    <input name="phone" type="hidden" value="6890677">
+    <input name="email" type="hidden" value="customer@gmail.com">
+    <input name="name" type="hidden" value="John Doe">
+    <input name="order_id" type="hidden" value="439">
+    <input name="return_url" type="hidden" value="http://example.com">
+    <input name="developer_id" type="hidden" value="1">
+    <button type="submit">Pay</button>
+</form>
