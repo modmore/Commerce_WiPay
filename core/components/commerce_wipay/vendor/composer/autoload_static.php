@@ -9,12 +9,12 @@ class ComposerStaticInit2da315b28792c77fdcf70adebb10827d
     public static $prefixLengthsPsr4 = array (
         'm' => 
         array (
-            'modmore\\WiPay\\' => 14,
+            'modmore\\Commerce_WiPay\\' => 23,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'modmore\\WiPay\\' => 
+        'modmore\\Commerce_WiPay\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),

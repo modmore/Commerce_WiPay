@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'modmore\\WiPay\\' => array($baseDir . '/src'),
+    'modmore\\Commerce_WiPay\\' => array($baseDir . '/src'),
 );

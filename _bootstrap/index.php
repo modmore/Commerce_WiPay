@@ -68,26 +68,26 @@ if (!createObject('modSystemSetting', array(
 }
 
 
-$settings = include dirname(__DIR__) . '/_build/data/settings.php';
-foreach ($settings as $key => $opts) {
-    $val = $opts['value'];
-
-    if (isset($opts['xtype'])) $xtype = $opts['xtype'];
-    elseif (is_int($val)) $xtype = 'numberfield';
-    elseif (is_bool($val)) $xtype = 'modx-combo-boolean';
-    else $xtype = 'textfield';
-
-    if (!createObject('modSystemSetting', array(
-        'key' => 'commerce_wipay.' . $key,
-        'value' => $opts['value'],
-        'xtype' => $xtype,
-        'namespace' => 'commerce_wipay',
-        'area' => $opts['area'],
-        'editedon' => time(),
-    ), 'key', false)) {
-        echo "Error creating commerce_wipay.".$key." setting.\n";
-    }
-}
+//$settings = include dirname(__DIR__) . '/_build/data/settings.php';
+//foreach ($settings as $key => $opts) {
+//    $val = $opts['value'];
+//
+//    if (isset($opts['xtype'])) $xtype = $opts['xtype'];
+//    elseif (is_int($val)) $xtype = 'numberfield';
+//    elseif (is_bool($val)) $xtype = 'modx-combo-boolean';
+//    else $xtype = 'textfield';
+//
+//    if (!createObject('modSystemSetting', array(
+//        'key' => 'commerce_wipay.' . $key,
+//        'value' => $opts['value'],
+//        'xtype' => $xtype,
+//        'namespace' => 'commerce_wipay',
+//        'area' => $opts['area'],
+//        'editedon' => time(),
+//    ), 'key', false)) {
+//        echo "Error creating commerce_wipay.".$key." setting.\n";
+//    }
+//}
 
 
 $path = $modx->getOption('commerce.core_path', null, MODX_CORE_PATH . 'components/commerce/') . 'model/commerce/';
@@ -105,7 +105,7 @@ include $componentPath . '/core/components/commerce_wipay/vendor/autoload.php';
 $modulePath = $componentPath . '/core/components/commerce_wipay/src/Modules/';
 
 // Instruct Commerce to load modules from our directory, providing the base namespace and module path twice
-$commerce->loadModulesFromDirectory($modulePath, 'modmore\\WiPay\\Modules\\', $modulePath);
+$commerce->loadModulesFromDirectory($modulePath, 'modmore\\Commerce_WiPay\\Modules\\', $modulePath);
 
 // Clear the cache
 $modx->cacheManager->refresh();

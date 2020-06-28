@@ -1,6 +1,6 @@
 <?php
 
-namespace modmore\WiPay\Gateways;
+namespace modmore\Commerce_WiPay\Gateways;
 
 use modmore\Commerce\Gateways\Interfaces\TransactionInterface;
 
