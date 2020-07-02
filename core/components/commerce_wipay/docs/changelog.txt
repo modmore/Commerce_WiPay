@@ -2,4 +2,10 @@ Wipay for Commerce 1.0.0-pl
 ---------------------------
 Released on 2020-06-29
 
+- Fix total amount to be decimal formatted instead of integer
+
+Wipay for Commerce 1.0.0-rc1
+---------------------------
+Released on 2020-06-29
+
 - Initial release

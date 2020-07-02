@@ -68,7 +68,7 @@ class WiPay implements GatewayInterface
         $phone = $billingAddress->get('phone') ?: $billingAddress->get('mobile');
 
         $submitData = [
-            'total' => $transaction->get('amount'),
+            'total' => number_format($transaction->get('amount') / 100, 2, '.', ''),
             'phone' => $phone,
             'email' => $billingAddress->get('email'),
             'name' => $fullName,
