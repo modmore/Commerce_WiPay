@@ -6,10 +6,15 @@ $_lang['commerce_wipay.description'] = 'Accept payments through WiPay with Comme
 // Gateway configuration
 $_lang['commerce_wipay.sandbox'] = 'Sandbox';
 $_lang['commerce_wipay.sandbox_desc'] = 'Enable to use the sandbox API URL instead of the live URL.';
-$_lang['commerce_wipay.developer_id'] = 'Developer ID';
-$_lang['commerce_wipay.developer_id_desc'] = 'Unique development identifier. Find the developer ID in your WiPay developer menu, or use "1" for the sandbox.';
-$_lang['commerce_wipay.merchant_key'] = 'Merchant Key';
-$_lang['commerce_wipay.merchant_key_desc'] = 'Used to verify transactions. Find the merchant key in your WiPay developer menu, or use "123" for the sandbox.';
+$_lang['commerce_wipay.account_number'] = 'Account Number';
+$_lang['commerce_wipay.account_number_desc'] = 'Your LIVE WiPay Account Number. Use 1234567890 for the sandbox account.';
+$_lang['commerce_wipay.api_key'] = 'API Key';
+$_lang['commerce_wipay.api_key_desc'] = 'Find the API key in your WiPay developer menu, or use 123 for the sandbox.';
+$_lang['commerce_wipay.select_api_country'] = 'Select API Country';
+$_lang['commerce_wipay.select_api_country_desc'] = 'Select the closest country to your server to speed up transactions.';
+$_lang['commerce_wipay.trinidad_and_tobago'] = 'Trinidad and Tobago';
+$_lang['commerce_wipay.barbados'] = 'Barbados';
+$_lang['commerce_wipay.jamaica'] = 'Jamaica';
 
 // Transaction properties
 $_lang['commerce.reasonCode'] = 'Reason Code';

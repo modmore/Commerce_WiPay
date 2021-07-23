@@ -10,7 +10,10 @@ use modmore\Commerce\Adapter\AdapterInterface;
 use modmore\Commerce\Adapter\Revolution;
 use modmore\Commerce\Admin\Widgets\Form\CheckboxField;
 use modmore\Commerce\Admin\Widgets\Form\PasswordField;
+use modmore\Commerce\Admin\Widgets\Form\SelectField;
 use modmore\Commerce\Admin\Widgets\Form\TextField;
+use modmore\Commerce\Admin\Widgets\Form\Validation\Enum;
+use modmore\Commerce\Admin\Widgets\Form\Validation\Required;
 use modmore\Commerce\Gateways\Exceptions\TransactionException;
 use modmore\Commerce\Gateways\Helpers\GatewayHelper;
 use modmore\Commerce\Gateways\Interfaces\GatewayInterface;
@@ -67,14 +70,28 @@ class WiPay implements GatewayInterface
         GatewayHelper::normalizeNames($firstName, $lastName, $fullName);
         $phone = $billingAddress->get('phone') ?: $billingAddress->get('mobile');
 
+//        $submitData = [
+//            'total' => number_format($transaction->get('amount') / 100, 2, '.', ''),
+//            'phone' => $phone,
+//            'email' => $billingAddress->get('email'),
+//            'name' => $fullName,
+//            'order_id' => $order->get('id'),
+//            'return_url' => GatewayHelper::getReturnUrl($transaction),
+//            'developer_id' => $this->method->getProperty('account_number'),
+//        ];
+
         $submitData = [
+            'account_number' => $this->method->getProperty('account_number'),
+            'country_code' => $billingAddress->get('country'),
+            'currency' => $order->getCurrency(),
+            'environment' => $this->method->getProperty('sandbox') ? 'sandbox' : 'live',
+            'fee_structure' => 'customer_pay',
+            'method' => 'credit_card',
             'total' => number_format($transaction->get('amount') / 100, 2, '.', ''),
-            'phone' => $phone,
-            'email' => $billingAddress->get('email'),
-            'name' => $fullName,
             'order_id' => $order->get('id'),
-            'return_url' => GatewayHelper::getReturnUrl($transaction),
-            'developer_id' => $this->method->getProperty('developer_id'),
+            'origin' => 'modmore_Commerce_MODX',
+            'response_url' => GatewayHelper::getReturnUrl($transaction),
+            'data' => json_encode($data)
         ];
 
         return new SubmitTransaction($this->getEndpoint(), $submitData);
@@ -112,20 +129,33 @@ class WiPay implements GatewayInterface
             $responseCode,
             $transaction->get('amount'),
             $order->get('id'),
-            $this->method->getProperty('merchant_key'),
+            $this->method->getProperty('api_key'),
             $hash
         );
     }
 
+    /**
+     * @return string
+     */
     public function getEndpoint(): string
     {
-        if ($this->method->getProperty('sandbox')) {
-            return 'https://sandbox.wipayfinancial.com/v1/gateway';
+        switch ($this->method->getProperty('api_url')) {
+            case 'BB':
+                return 'https://bb.wipayfinancial.com/plugins/payments/request';
+
+            case 'JM':
+                return 'https://jm.wipayfinancial.com/plugins/payments/request';
+
+            default:
+                return 'https://tt.wipayfinancial.com/plugins/payments/request';
         }
-        return 'https://wipayfinancial.com/v1/gateway_live';
     }
 
-    public function getGatewayProperties(comPaymentMethod $method)
+    /**
+     * @param comPaymentMethod $method
+     * @return array
+     */
+    public function getGatewayProperties(comPaymentMethod $method): array
     {
         $fields = [];
 
@@ -138,17 +168,33 @@ class WiPay implements GatewayInterface
         ]);
 
         $fields[] = new TextField($this->commerce, [
-            'name' => 'properties[developer_id]',
-            'label' => $this->adapter->lexicon('commerce_wipay.developer_id'),
-            'description' => $this->adapter->lexicon('commerce_wipay.developer_id_desc'),
-            'value' => $method->getProperty('developer_id'),
+            'name' => 'properties[account_number]',
+            'label' => $this->adapter->lexicon('commerce_wipay.account_number'),
+            'description' => $this->adapter->lexicon('commerce_wipay.account_number_desc'),
+            'value' => $method->getProperty('account_number'),
         ]);
 
         $fields[] = new PasswordField($this->commerce, [
-            'name' => 'properties[merchant_key]',
-            'label' => $this->adapter->lexicon('commerce_wipay.merchant_key'),
-            'description' => $this->adapter->lexicon('commerce_wipay.merchant_key_desc'),
-            'value' => $method->getProperty('merchant_key'),
+            'name' => 'properties[api_key]',
+            'label' => $this->adapter->lexicon('commerce_wipay.api_key'),
+            'description' => $this->adapter->lexicon('commerce_wipay.api_key_desc'),
+            'value' => $method->getProperty('api_key'),
+        ]);
+
+        $fields[] = new SelectField($this->commerce, [
+            'name' => 'properties[api_url]',
+            'label' => $this->adapter->lexicon('commerce_wipay.select_api_country'),
+            'description' => $this->adapter->lexicon('commerce_wipay.select_api_country_desc'),
+            'options' => [
+                ['value' => 'TT', 'label' => $this->adapter->lexicon('commerce_wipay.trinidad_and_tobago')],
+                ['value' => 'BB', 'label' => $this->adapter->lexicon('commerce_wipay.barbados')],
+                ['value' => 'JM', 'label' => $this->adapter->lexicon('commerce_wipay.jamaica')],
+            ],
+            'validation' => [
+                new Required(),
+                new Enum(['TT', 'BB', 'JM']),
+            ],
+            'value' => $method->getProperty('api_url')
         ]);
 
         return $fields;
