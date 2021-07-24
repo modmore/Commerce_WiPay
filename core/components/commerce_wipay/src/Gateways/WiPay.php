@@ -70,15 +70,18 @@ class WiPay implements GatewayInterface
         GatewayHelper::normalizeNames($firstName, $lastName, $fullName);
         $phone = $billingAddress->get('phone') ?: $billingAddress->get('mobile');
 
-//        $submitData = [
-//            'total' => number_format($transaction->get('amount') / 100, 2, '.', ''),
-//            'phone' => $phone,
-//            'email' => $billingAddress->get('email'),
-//            'name' => $fullName,
-//            'order_id' => $order->get('id'),
-//            'return_url' => GatewayHelper::getReturnUrl($transaction),
-//            'developer_id' => $this->method->getProperty('account_number'),
-//        ];
+        $userData = [
+            'name' => $fullName,
+            'email' => $billingAddress->get('email'),
+            'phone' => $phone,
+            'address1' => $billingAddress->get('address1'),
+            'address2' => $billingAddress->get('address2'),
+            'address3' => $billingAddress->get('address3'),
+            'zip' => $billingAddress->get('zip'),
+            'city' => $billingAddress->get('city'),
+            'state' => $billingAddress->get('state'),
+            'country' => $billingAddress->get('country')
+        ];
 
         $submitData = [
             'account_number' => $this->method->getProperty('account_number'),
@@ -91,7 +94,7 @@ class WiPay implements GatewayInterface
             'order_id' => $order->get('id'),
             'origin' => 'modmore_Commerce_MODX',
             'response_url' => GatewayHelper::getReturnUrl($transaction),
-            'data' => json_encode($data)
+            'data' => json_encode($userData)
         ];
 
         return new SubmitTransaction($this->getEndpoint(), $submitData);

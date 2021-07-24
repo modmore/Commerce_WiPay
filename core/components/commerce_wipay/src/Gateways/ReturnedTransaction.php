@@ -125,7 +125,7 @@ class ReturnedTransaction implements TransactionInterface
     private function checkHash()
     {
         $total = number_format($this->expectedTotal / 100, 2, '.', '');
-        $this->expectedHash = md5($this->orderId . $total . $this->merchantKey);
+        $this->expectedHash = md5($this->getPaymentReference() . $total . $this->merchantKey);
         $this->hashValid = $this->expectedHash === $this->hash;
     }
 }
