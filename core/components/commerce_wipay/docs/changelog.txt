@@ -1,4 +1,4 @@
-Wipay for Commerce 2.0.0-dev1
+Wipay for Commerce 2.0.0-rc1
 ---------------------------
 Released on 2021-07-23
 
