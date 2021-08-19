@@ -86,7 +86,7 @@ class WiPay implements GatewayInterface
         $submitData = [
             'account_number' => $this->method->getProperty('account_number'),
             'country_code' => $billingAddress->get('country'),
-            'currency' => $order->getCurrency(),
+            'currency' => $order->getCurrency()->get('alpha_code'),
             'environment' => $this->method->getProperty('sandbox') ? 'sandbox' : 'live',
             'fee_structure' => 'customer_pay',
             'method' => 'credit_card',
@@ -111,14 +111,6 @@ class WiPay implements GatewayInterface
         $reasonCode = (int)($data['reasonCode'] ?? 0);
         $reasonDescription = $data['reasonDescription'] ?? '';
         $responseCode = (int)($data['responseCode'] ?? 0);
-
-        // These variables don't seem needed.
-        // - Rather than trusting the URL param for the total, we check the transaction
-        // - No idea what "D=TT" is supposed to mean
-        // - Who cares about a timestamp provided by the provider
-//        $total = $data['total'] ?? 0;
-//        $d = $data['D'] ?? ''; // ?????
-//        $date = $data['date'] ?? '';
 
         $order = $transaction->getOrder();
         if (!$order) {
