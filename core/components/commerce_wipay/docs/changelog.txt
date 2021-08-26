@@ -1,3 +1,9 @@
+Wipay for Commerce 2.0.0-pl
+---------------------------
+Released on 2021-08-26
+
+- Public release of 2.0.0-pl
+
 Wipay for Commerce 2.0.0-rc2
 ---------------------------
 Released on 2021-08-19
@@ -8,7 +14,7 @@ Wipay for Commerce 2.0.0-rc1
 ---------------------------
 Released on 2021-07-23
 
-Update to new WiPay API specs. Older versions are broken.
+- Update to new WiPay API specs. Older versions are broken.
 
 Wipay for Commerce 1.0.0-pl
 ---------------------------
